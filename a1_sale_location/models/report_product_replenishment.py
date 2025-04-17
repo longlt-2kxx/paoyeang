@@ -7,8 +7,6 @@ class ReportProductProductReplenishment(models.AbstractModel):
     _inherit = 'report.stock.report_product_product_replenishment'
     _description = "Stock Replenishment Report Customization"
 
-    print('stock.report_product_product_replenishment')
-
     @api.model
     def get_filter_state(self):
         # Lấy danh sách warehouse mà user được phép truy cập
@@ -40,7 +38,9 @@ class ReportProductProductReplenishment(models.AbstractModel):
                 if warehouse_rec:
                     active_id = warehouse_rec.id
         # Nếu vẫn không có active_id nhưng danh sách warehouses không rỗng, lấy phần tử đầu tiên
-        if not active_id and warehouses:
+        if not active_id and self.env.user.property_warehouse_id:
+            active_id = self.env.user.property_warehouse_id.id
+        elif not active_id and warehouses:
             active_id = warehouses[0]['id']
 
         return {
@@ -51,7 +51,8 @@ class ReportProductProductReplenishment(models.AbstractModel):
     def _get_report_data(self, product_template_ids=False, product_variant_ids=False):
         assert product_template_ids or product_variant_ids
         res = {}
-
+        if not self.env.context.get('warehouse') and self.env.user.property_warehouse_id:
+            self = self.with_context(warehouse=self.env.user.property_warehouse_id.id)
         # 🔐 Lấy danh sách warehouse được phép truy cập
         allowed_warehouses = self.env.user.x_allowed_warehouse_ids
         allowed_ids = allowed_warehouses.ids

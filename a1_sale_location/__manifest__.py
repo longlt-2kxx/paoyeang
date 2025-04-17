@@ -10,8 +10,8 @@
     'category': 'Inventory',
     'depends': ['base', 'stock', 'sale', 'sale_stock'],
     'data': [
-        'security/ir.model.access.csv',
         'security/ir_groups.xml',
+        'security/ir.model.access.csv',
         # 'security/group_view.xml',
         'security/ir_rules.xml',
         'views/res_users_views.xml',

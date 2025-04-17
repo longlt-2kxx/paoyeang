@@ -1,6 +1,8 @@
 from odoo import models, fields, api
 import logging
 
+from odoo.exceptions import UserError
+
 _logger = logging.getLogger(__name__)
 
 class SaleOrder(models.Model):
@@ -15,7 +17,6 @@ class SaleOrder(models.Model):
 
     @api.onchange('user_id')
     def _onchange_user_id_set_wh_domain(self):
-        print(1)
         for order in self:
             user = order.user_id or self.env.user
             return {
