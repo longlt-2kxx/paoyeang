@@ -1,0 +1,81 @@
+<odoo>
+
+    <!-- stock.quant: Stock On Hand -->
+    <record id="rule_stock_quant_by_location" model="ir.rule">
+        <field name="name">Stock quant by location</field>
+        <field name="model_id" ref="stock.model_stock_quant"/>
+        <field name="groups" eval="[(4, ref('a1_sale_location.group_inventory_sales_admin'))]"/>
+        <field name="domain_force">
+            [('location_id', 'in', user.x_allowed_location_ids.ids)]
+        </field>
+    </record>
+
+    <!-- stock.picking.type: Inventory Overview -->
+    <record id="rule_picking_type_by_location" model="ir.rule">
+        <field name="name">Picking type by location</field>
+        <field name="model_id" ref="stock.model_stock_picking_type"/>
+        <field name="groups" eval="[(4, ref('a1_sale_location.group_inventory_sales_admin'))]"/>
+        <field name="domain_force">
+            ['|',
+            ('default_location_dest_id', 'in', user.x_allowed_location_ids.ids),
+            ('default_location_src_id', 'in', user.x_allowed_location_ids.ids)]
+        </field>
+    </record>
+
+    <!-- stock.picking: Stock Transfer -->
+    <record id="rule_stock_picking_by_location" model="ir.rule">
+        <field name="name">Stock picking by location</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="groups" eval="[(4, ref('a1_sale_location.group_inventory_sales_admin'))]"/>
+        <field name="domain_force">
+            ['|',
+            ('location_dest_id', 'in', user.x_allowed_location_ids.ids),
+            ('location_id', 'in', user.x_allowed_location_ids.ids)]
+        </field>
+    </record>
+
+    <!-- stock.scrap -->
+    <record id="rule_scrap_by_location" model="ir.rule">
+        <field name="name">Stock scrap by location</field>
+        <field name="model_id" ref="stock.model_stock_scrap"/>
+        <field name="groups" eval="[(4, ref('a1_sale_location.group_inventory_sales_admin'))]"/>
+        <field name="domain_force">
+            [('location_id', 'in', user.x_allowed_location_ids.ids)]
+        </field>
+    </record>
+
+    <!-- stock.inventory -->
+    <record id="rule_inventory_by_location" model="ir.rule">
+        <field name="name">inventory adjustment by location</field>
+        <field name="model_id" ref="stock.model_stock_inventory"/>
+        <field name="groups" eval="[(4, ref('a1_sale_location.group_inventory_sales_admin'))]"/>
+        <field name="domain_force">
+            [('location_ids', 'in', user.x_allowed_location_ids.ids)]
+        </field>
+    </record>
+    <record id="rule_sale_line_read_forecast" model="ir.rule">
+        <field name="name">Read Sale Order Line for Forecast</field>
+        <field name="model_id" ref="sale.model_sale_order_line"/>
+        <field name="domain_force">
+            ['|',('order_id.user_id','=',user.id), ('order_id.warehouse_id','in', user.x_allowed_warehouse_ids.ids)]
+        </field>
+        <field name="groups" eval="[(4, ref('a1_sale_location.group_inventory_sales_admin'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="rule_sale_order_forecast_read" model="ir.rule">
+        <field name="name">Allow read Sale Orders for Forecast</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="domain_force">
+            ['|', ('user_id', '=', user.id), ('warehouse_id', 'in', user.x_allowed_warehouse_ids.ids)]
+        </field>
+        <field name="groups" eval="[(4, ref('a1_sale_location.group_inventory_sales_admin'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="0"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+
+</odoo>

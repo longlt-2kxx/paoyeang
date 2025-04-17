@@ -1,0 +1,17 @@
+<odoo>
+    <!-- Gắn quyền menu cho nhóm -->
+    <record id="menu_stock_root" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('a1_sale_location.group_inventory_sales_admin'))]"/>
+    </record>
+    <record id="menu_stock_picking_action" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('a1_sale_location.group_inventory_sales_admin'))]"/>
+    </record>
+
+    <!-- Gắn quyền xem các view liên quan -->
+    <record id="stock_product_form_view_procurement_button" model="ir.ui.view">
+        <field name="groups_id" eval="[(4, ref('a1_sale_location.group_inventory_sales_admin'))]"/>
+    </record>
+    <record id="stock_product_template_form_view_procurement_button" model="ir.ui.view">
+        <field name="groups_id" eval="[(4, ref('a1_sale_location.group_inventory_sales_admin'))]"/>
+    </record>
+</odoo>

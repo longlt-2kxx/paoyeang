@@ -1,0 +1,27 @@
+<odoo>
+    <record id="view_order_form_hide_groups_inherit" model="ir.ui.view">
+        <field name="name">sale.order.form.hide.sales.invoicing</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='sales_person']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//group[@name='sale_info']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+        </field>
+    </record>
+    <record id="view_order_form_custom_inherit_product_context" model="ir.ui.view">
+        <field name="name">sale.order.line.form.context.warehouse</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <field name="product_id" position="attributes">
+                <attribute name="context">{'warehouse_id': warehouse_id}</attribute>
+            </field>
+        </field>
+    </record>
+
+</odoo>
