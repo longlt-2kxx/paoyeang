@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="hide_replenish_buttons" xml:space="preserve">
+  <!-- Extend template đã định nghĩa nút -->
+  <t t-extend="replenish_report_buttons">
+    <!-- Chọn chính cái <button> có class .o_report_replenish_buy -->
+    <t t-jquery="button.o_report_replenish_buy" t-operation="attributes">
+      <attribute name="t-if">env.user.has_group('stock.group_stock_manager')</attribute>
+    </t>
+    </t>
+</templates>

@@ -1,6 +1,6 @@
 from odoo import models, api
 import logging
-
+from odoo.exceptions import UserError
 _logger = logging.getLogger(__name__)
 
 class ReportProductProductReplenishment(models.AbstractModel):
@@ -17,7 +17,12 @@ class ReportProductProductReplenishment(models.AbstractModel):
             [('id', 'in', allowed_ids)],
             fields=['id', 'name', 'code']
         )
-
+        if not warehouses:
+            raise UserError(
+                "You are not assigned to any warehouse.\n"
+                "Please go to your User Settings to select a default warehouse,\n"
+                "or contact your manager to be assigned to at least one warehouse before viewing this report."
+            )
         # Lấy active warehouse từ context (đang được truyền dưới dạng ID nếu có)
         active_warehouse_id = self.env.context.get('warehouse', False)
         active_id = False
@@ -51,8 +56,9 @@ class ReportProductProductReplenishment(models.AbstractModel):
     def _get_report_data(self, product_template_ids=False, product_variant_ids=False):
         assert product_template_ids or product_variant_ids
         res = {}
-        if not self.env.context.get('warehouse') and self.env.user.property_warehouse_id:
-            self = self.with_context(warehouse=self.env.user.property_warehouse_id.id)
+        if not self.env.context.get('warehouse') and self.env.user.x_allowed_warehouse_ids:
+            self = self.with_context(warehouse=self.env.user.x_allowed_warehouse_ids[0].id)
+
         # 🔐 Lấy danh sách warehouse được phép truy cập
         allowed_warehouses = self.env.user.x_allowed_warehouse_ids
         allowed_ids = allowed_warehouses.ids
@@ -65,7 +71,10 @@ class ReportProductProductReplenishment(models.AbstractModel):
         elif allowed_ids:
             warehouse = allowed_warehouses[0]  # Chọn warehouse đầu tiên user được gán
         else:
-            raise ValueError("You are not assigned to any warehouse and cannot view the forecast report.")
+            raise UserError(
+                "You are not assigned to any warehouse.\n"
+                "Please go to your user preferences and assign at least one warehouse before viewing this report."
+            )
 
         # ⚠️ Cập nhật context nếu chưa có hoặc không hợp lệ
         if not context_warehouse_id or context_warehouse_id != warehouse.id:

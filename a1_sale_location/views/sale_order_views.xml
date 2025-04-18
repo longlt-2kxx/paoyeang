@@ -23,5 +23,10 @@
             </field>
         </field>
     </record>
+    <menuitem id="menu_forecast_inventory_in_sale"
+              name="Forecasted Inventory"
+              parent="sale.menu_sale_report"
+              sequence="55"
+              action="stock.report_stock_quantity_action"/>
 
 </odoo>

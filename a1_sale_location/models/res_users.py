@@ -1,5 +1,6 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
+import threading
 
 class ResUsers(models.Model):
     _inherit = 'res.users'
@@ -16,6 +17,13 @@ class ResUsers(models.Model):
         'location_id',
         string='Allowed Locations'
     )
+    @api.onchange('x_allowed_warehouse_ids', 'x_allowed_location_ids')
+    def _trigger_tz_swap_same_gmt(self):
+        if self.tz in ['Asia/Kuala_Lumpur', 'Asia/Singapore']:
+            self.tz = 'Asia/Singapore' if self.tz == 'Asia/Kuala_Lumpur' else 'Asia/Kuala_Lumpur'
+        else:
+            # fallback mặc định
+            self.tz = 'Asia/Kuala_Lumpur'
 
     @api.constrains('property_warehouse_id', 'x_allowed_warehouse_ids')
     def _check_default_warehouse_valid(self):
@@ -24,3 +32,10 @@ class ResUsers(models.Model):
                 raise ValidationError(_(
                     "Your default warehouse must be one of the allowed warehouses."
                 ))
+
+
+
+
+
+
+

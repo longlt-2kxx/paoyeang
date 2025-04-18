@@ -12,12 +12,12 @@
     'data': [
         'security/ir_groups.xml',
         'security/ir.model.access.csv',
-        # 'security/group_view.xml',
         'security/ir_rules.xml',
         'views/res_users_views.xml',
         'views/sale_order_views.xml',
         'views/stock_location_views.xml',
     ],
+
     'installable': True,
     'application': False,
     'auto_install': False,

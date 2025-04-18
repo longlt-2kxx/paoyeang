@@ -12,6 +12,9 @@
                     <field name="x_allowed_location_ids" widget="many2many_tags"/>
                 </group>
             </xpath>
+<!--            <xpath expr="//field[@name='tz']" position="attributes">-->
+<!--                <attribute name="invisible">base.group_no_one</attribute>-->
+<!--            </xpath>-->
         </field>
     </record>
     <record id="view_users_form_property_wh_restrict" model="ir.ui.view">
