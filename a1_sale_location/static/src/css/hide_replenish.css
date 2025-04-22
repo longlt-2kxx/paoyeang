@@ -1,0 +1,4 @@
+/* chỉ ẩn cho user thuộc group_inventory_sales_admin */
+html.o_sale_location_sales_admin body.o_web_client .o_report_replenish_buy {
+  display: none !important;
+}

@@ -6,4 +6,20 @@
         <field name="implied_ids" eval="[(4, ref('stock.group_stock_user'))]"/>
         <field name="share" eval="False"/>
     </record>
+
+  <!-- Rule chỉ áp cho nhóm Sales Admin (group_inventory_sales_admin) -->
+  <record id="sale_report_by_default_warehouse" model="ir.rule">
+    <field name="name">Sale Report: by Default Warehouse</field>
+    <field name="model_id" ref="sale.model_sale_report"/>
+    <!-- áp cho tất cả user -->
+    <field name="global" eval="True"/>
+    <field name="domain_force">
+      <![CDATA[
+        [
+          ('warehouse_id', '=', user.property_warehouse_id.id)
+        ]
+      ]]>
+    </field>
+  </record>
+
 </odoo>

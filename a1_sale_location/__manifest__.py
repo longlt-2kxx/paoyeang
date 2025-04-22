@@ -9,15 +9,20 @@
     'author': 'Jackie Ly',
     'category': 'Inventory',
     'depends': ['base', 'stock', 'sale', 'sale_stock'],
+
     'data': [
         'security/ir_groups.xml',
         'security/ir.model.access.csv',
         'security/ir_rules.xml',
+        'views/assets.xml',
         'views/res_users_views.xml',
         'views/sale_order_views.xml',
         'views/stock_location_views.xml',
+        'views/product_replenish_views.xml',
     ],
-
+    # 'qweb': [
+    #     'static/src/xml/hide_replenish_button.xml',
+    # ],
     'installable': True,
     'application': False,
     'auto_install': False,

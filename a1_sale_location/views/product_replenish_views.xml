@@ -1,0 +1,16 @@
+<odoo>
+  <record id="product_template_hide_procure_replenish" model="ir.ui.view">
+    <field name="name">product.template.procurement.hide.replenish</field>
+    <field name="model">product.template</field>
+    <!-- Chỉ áp dụng khi user nằm trong group_inventory_sales_admin -->
+    <field name="groups_id" eval="[(4, ref('a1_sale_location.group_inventory_sales_admin'))]"/>
+    <!-- Kế thừa view gốc có nút Replenish -->
+    <field name="inherit_id" ref="stock.product_template_form_view_procurement_button"/>
+    <field name="arch" type="xml">
+      <!-- Bắt đúng button theo thuộc tính name và ẩn nó -->
+      <xpath expr="//header/button[@name='%(stock.action_product_replenish)d']" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </xpath>
+    </field>
+  </record>
+</odoo>

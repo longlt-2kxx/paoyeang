@@ -1,5 +1,5 @@
 <odoo>
-  <template id="assets_backend_inherit" inherit_id="web.assets_backend" name="Hide Replenish Button for Sales Rep">
+  <template id="assets_backend_inherit" inherit_id="web.assets_backend">
     <xpath expr="." position="inside">
       <script type="text/javascript" src="/a1_sale_location/static/src/js/hide_replenish.js"/>
     </xpath>
