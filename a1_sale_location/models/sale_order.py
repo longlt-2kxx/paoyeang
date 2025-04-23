@@ -24,3 +24,15 @@ class SaleOrder(models.Model):
                     'warehouse_id': [('id', 'in', user.x_allowed_warehouse_ids.ids)]
                 }
             }
+
+    @api.model
+    def _search(self, args, offset=0, limit=None, order=None, count=False):
+        user = self.env.user
+        # chỉ áp cho Sales Admin
+        if user.has_group('a1_sale_location.group_inventory_sales_admin'):
+            domain = ['|',
+                      ('user_id', '=', user.id),
+                      ('warehouse_id', '=', user.property_warehouse_id.id)
+                      ]
+            args = domain + args
+        return super(SaleOrder, self)._search(args, offset=offset, limit=limit, order=order, count=count)

@@ -3,23 +3,30 @@
     <record id="group_inventory_sales_admin" model="res.groups">
         <field name="name">Sales Admin</field>
         <field name="category_id" ref="base.module_category_inventory"/>
-        <field name="implied_ids" eval="[(4, ref('stock.group_stock_user'))]"/>
+        <!-- Không implied stock.group_stock_user ở đây -->
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
         <field name="share" eval="False"/>
     </record>
+    <record id="stock.product_form_view_procurement_button" model="ir.ui.view">
+  <field name="groups_id" eval="[(4, ref('a1_sale_location.group_inventory_sales_admin')),(4, ref('stock.group_stock_user'))]"/>
+    </record>
+    <!-- 2) Gán View product.template.procurement vào Sales Admin -->
+    <record id="stock.product_template_form_view_procurement_button" model="ir.ui.view">
+        <field name="groups_id" eval="[(4, ref('a1_sale_location.group_inventory_sales_admin')),(4, ref('stock.group_stock_user'))]"/>
+    </record>
 
-  <!-- Rule chỉ áp cho nhóm Sales Admin (group_inventory_sales_admin) -->
-  <record id="sale_report_by_default_warehouse" model="ir.rule">
-    <field name="name">Sale Report: by Default Warehouse</field>
-    <field name="model_id" ref="sale.model_sale_report"/>
-    <!-- áp cho tất cả user -->
-    <field name="global" eval="True"/>
-    <field name="domain_force">
-      <![CDATA[
-        [
+    <record id="sale_order_restrict_by_wh_or_user" model="ir.rule">
+        <field name="name">Sale Order / Quotation: by Salesperson or Default Warehouse</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="global" eval="False"/>
+        <field name="groups" eval="[(4, ref('a1_sale_location.group_inventory_sales_admin'))]"/>
+        <field name="domain_force">
+            <![CDATA[
+        ['|',
+          ('user_id', '=', user.id),
           ('warehouse_id', '=', user.property_warehouse_id.id)
         ]
       ]]>
-    </field>
-  </record>
-
+        </field>
+    </record>
 </odoo>

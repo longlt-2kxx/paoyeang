@@ -68,10 +68,16 @@
     <record id="rule_sale_order_forecast_read" model="ir.rule">
         <field name="name">Allow read Sale Orders for Forecast</field>
         <field name="model_id" ref="sale.model_sale_order"/>
+         <field name="groups" eval="[(4, ref('a1_sale_location.group_inventory_sales_admin'))]"/>
         <field name="domain_force">
-            ['|', ('user_id', '=', user.id), ('warehouse_id', 'in', user.x_allowed_warehouse_ids.ids)]
+            <![CDATA[
+      ['|',
+        ('user_id','=', user.id),
+        ('warehouse_id','=', user.property_warehouse_id.id)
+      ]
+    ]]>
         </field>
-        <field name="groups" eval="[(4, ref('a1_sale_location.group_inventory_sales_admin'))]"/>
+
         <field name="perm_read" eval="1"/>
         <field name="perm_write" eval="0"/>
         <field name="perm_create" eval="0"/>
