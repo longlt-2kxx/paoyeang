@@ -17,6 +17,16 @@ class ResUsers(models.Model):
         'location_id',
         string='Allowed Locations'
     )
+
+    @api.onchange('x_allowed_location_ids')
+    def _onchange_x_allowed_location_ids(self):
+        if self.x_allowed_location_ids:
+            all_locations = self.env['stock.location'].search([
+                ('id', 'child_of', self.x_allowed_location_ids.ids),
+                ('usage', '=', 'internal')  # chỉ lấy location thực tế, bỏ scrap/view
+            ])
+            self.x_allowed_location_ids = [(6, 0, all_locations.ids)]
+
     @api.onchange('x_allowed_warehouse_ids', 'x_allowed_location_ids')
     def _trigger_tz_swap_same_gmt(self):
         if self.tz in ['Asia/Kuala_Lumpur', 'Asia/Singapore']:

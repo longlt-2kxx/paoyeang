@@ -2,17 +2,19 @@
 <odoo>
     <record id="group_inventory_sales_admin" model="res.groups">
         <field name="name">Sales Admin</field>
-        <field name="category_id" ref="base.module_category_inventory"/>
+        <field name="category_id" ref="base.module_category_inventory_inventory"/>
         <!-- Không implied stock.group_stock_user ở đây -->
         <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
         <field name="share" eval="False"/>
     </record>
     <record id="stock.product_form_view_procurement_button" model="ir.ui.view">
-  <field name="groups_id" eval="[(4, ref('a1_sale_location.group_inventory_sales_admin')),(4, ref('stock.group_stock_user'))]"/>
+        <field name="groups_id"
+               eval="[(4, ref('a1_sale_location.group_inventory_sales_admin')),(4, ref('stock.group_stock_user'))]"/>
     </record>
     <!-- 2) Gán View product.template.procurement vào Sales Admin -->
     <record id="stock.product_template_form_view_procurement_button" model="ir.ui.view">
-        <field name="groups_id" eval="[(4, ref('a1_sale_location.group_inventory_sales_admin')),(4, ref('stock.group_stock_user'))]"/>
+        <field name="groups_id"
+               eval="[(4, ref('a1_sale_location.group_inventory_sales_admin')),(4, ref('stock.group_stock_user'))]"/>
     </record>
 
     <record id="sale_order_restrict_by_wh_or_user" model="ir.rule">
@@ -29,4 +31,26 @@
       ]]>
         </field>
     </record>
+    <record id="sale_report_personal_or_allowed_wh_rule" model="ir.rule">
+        <field name="name">Sales report: own orders OR allowed warehouse</field>
+        <field name="model_id" ref="sale.model_sale_report"/>
+        <field name="groups" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+
+        <!-- Domain chính:  (user_id = user.id)  OR  (warehouse_id IN user.x_allowed_warehouse_ids) -->
+        <field name="domain_force">
+            ['|',
+            ('user_id', '=', user.id),
+            ('warehouse_id', 'in', user.x_allowed_warehouse_ids.ids)
+            ]
+        </field>
+    </record>
+    <menuitem id="sale.menu_sale_report"
+              name="Reporting"
+              parent="sale.sale_menu_root"
+              sequence="5"
+              groups="sales_team.group_sale_manager,sales_team.group_sale_salesman"/>
 </odoo>

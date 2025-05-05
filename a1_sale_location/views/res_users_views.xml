@@ -12,9 +12,9 @@
                     <field name="x_allowed_location_ids" widget="many2many_tags"/>
                 </group>
             </xpath>
-<!--            <xpath expr="//field[@name='tz']" position="attributes">-->
-<!--                <attribute name="invisible">base.group_no_one</attribute>-->
-<!--            </xpath>-->
+            <!--            <xpath expr="//field[@name='tz']" position="attributes">-->
+            <!--                <attribute name="invisible">base.group_no_one</attribute>-->
+            <!--            </xpath>-->
         </field>
     </record>
     <record id="view_users_form_property_wh_restrict" model="ir.ui.view">
@@ -23,10 +23,10 @@
         <field name="inherit_id" ref="sale_stock.res_users_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='property_warehouse_id']" position="replace">
-            <field name="property_warehouse_id"
-                   domain="[('id', 'in', x_allowed_warehouse_ids)]"
-                   groups="stock.group_stock_multi_warehouses"/>
-        </xpath>
+                <field name="property_warehouse_id"
+                       domain="[('id', 'in', x_allowed_warehouse_ids)]"
+                       groups="stock.group_stock_multi_warehouses"/>
+            </xpath>
         </field> <!-- ✅ đây mới là field name="arch" -->
     </record>
 

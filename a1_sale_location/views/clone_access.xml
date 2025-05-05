@@ -1,0 +1,30 @@
+<odoo>
+    <record id="view_clone_access_wizard_form" model="ir.ui.view">
+        <field name="name">clone.access.wizard.form</field>
+        <field name="model">clone.access.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Clone Access Rights">
+                <group>
+                    <field name="group_from_id"/>
+                    <field name="group_to_id"/>
+                </group>
+                <footer>
+                    <button name="action_clone_access" type="object" string="Clone Now" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_clone_access_wizard" model="ir.actions.act_window">
+        <field name="name">Clone Access Rights</field>
+        <field name="res_model">clone.access.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    <menuitem id="menu_clone_access_root" name="Access Tools" sequence="100" groups="base.group_system"/>
+    <menuitem id="menu_clone_access_rights" name="Clone Access Rights"
+              parent="base.menu_users"
+              action="action_clone_access_wizard"
+              sequence="1"
+    />
+</odoo>

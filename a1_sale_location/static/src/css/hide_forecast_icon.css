@@ -1,0 +1,14 @@
+/* Dựa vào class icon cụ thể */
+.hide-forecast-icon a.fa.fa-area-chart {
+    display: none !important;
+}
+
+/* Trường hợp icon nằm trong td nào đó */
+.hide-forecast-icon td .fa.fa-area-chart {
+    display: none !important;
+}
+
+/* Fallback: ẩn luôn forecast trong order line nếu cần */
+.hide-forecast-icon [title*="Forecasted Quantity"] {
+    display: none !important;
+}

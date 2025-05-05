@@ -1,0 +1,45 @@
+<odoo>
+    <record id="view_sale_report_tree_custom" model="ir.ui.view">
+        <field name="name">sale.report.tree.custom</field>
+        <field name="model">sale.report</field>
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+            <tree create="false">
+                <!-- Thông tin đơn hàng -->
+                <field name="name" string="SO Number"/>
+                <field name="date" string="Order Date"/>
+                <field name="state" string="Status"/>
+                <field name="team_id" string="Sales Team"/>
+                <field name="user_id" string="Salesperson"/>
+                <field name="company_id" string="Company"/>
+
+                <!-- Thông tin khách hàng và kho -->
+                <field name="partner_id" string="Customer"/>
+                <field name="warehouse_id" string="Warehouse"/>
+
+                <!-- Thông tin sản phẩm -->
+                <field name="product_id" string="Product"/>
+                <field name="product_uom" string="UoM"/>
+                <field name="categ_id" string="Product Category"/>
+
+                <!-- Số lượng và tài chính -->
+                <field name="product_uom_qty" string="Qty Ordered"/>
+                <field name="qty_delivered" string="Qty Delivered"/>
+                <field name="qty_invoiced" string="Qty Invoiced"/>
+                <field name="price_total" string="Subtotal"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="sale_enterprise.sale_report_action_dashboard" model="ir.actions.act_window">
+        <field name="view_mode">dashboard,tree,pivot,graph</field>
+    </record>
+
+    <record id="sale_report_action_dashboard_tree_custom" model="ir.actions.act_window.view">
+        <field name="sequence" eval="4"/> <!-- sequence thấp hơn pivot/graph để tree ưu tiên -->
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="a1_sale_location.view_sale_report_tree_custom"/>
+        <field name="act_window_id" ref="sale_enterprise.sale_report_action_dashboard"/>
+    </record>
+
+</odoo>

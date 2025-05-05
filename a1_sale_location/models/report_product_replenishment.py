@@ -1,7 +1,5 @@
 from odoo import models, api
-import logging
 from odoo.exceptions import UserError
-_logger = logging.getLogger(__name__)
 
 class ReportProductProductReplenishment(models.AbstractModel):
     _inherit = 'report.stock.report_product_product_replenishment'
@@ -79,9 +77,6 @@ class ReportProductProductReplenishment(models.AbstractModel):
         # ⚠️ Cập nhật context nếu chưa có hoặc không hợp lệ
         if not context_warehouse_id or context_warehouse_id != warehouse.id:
             self = self.with_context(warehouse=warehouse.id)
-
-        _logger.info("[a1_sale_location] Using warehouse: %s (ID: %s)", warehouse.name, warehouse.id)
-
         # ✅ Get the warehouse's internal locations (and children)
         wh_location_ids = [loc['id'] for loc in self.env['stock.location'].search_read(
             [('id', 'child_of', warehouse.view_location_id.id)],

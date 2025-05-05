@@ -1,0 +1,38 @@
+<odoo>
+    <record id="view_forecast_line_tree" model="ir.ui.view">
+        <field name="name">forecast.by.location.line.tree</field>
+        <field name="model">forecast.by.location.line</field>
+        <field name="arch" type="xml">
+            <tree string="Forecast by Location">
+                <field name="location_id"/>
+                <field name="onhand"/>
+                <field name="forecast_qty"/>
+                <field name="reserved"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_forecast_line_pivot" model="ir.ui.view">
+        <field name="name">forecast.by.location.line.pivot</field>
+        <field name="model">forecast.by.location.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Forecast Pivot">
+                <field name="location_id" type="col"/>
+                <field name="forecast_qty" type="measure"/>
+                <field name="onhand" type="measure"/>
+                <field name="reserved" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_forecast_line_graph" model="ir.ui.view">
+        <field name="name">forecast.by.location.line.graph</field>
+        <field name="model">forecast.by.location.line</field>
+        <field name="arch" type="xml">
+            <graph string="Forecast Graph">
+                <field name="location_id" type="row"/>
+                <field name="forecast_qty" type="measure"/>
+            </graph>
+        </field>
+    </record>
+</odoo>

@@ -1,7 +1,17 @@
 <odoo>
-  <template id="assets_backend_inherit" inherit_id="web.assets_backend">
-    <xpath expr="." position="inside">
-      <script type="text/javascript" src="/a1_sale_location/static/src/js/hide_replenish.js"/>
-    </xpath>
-  </template>
+    <template id="assets_backend_inherit" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/a1_sale_location/static/src/js/hide_replenish.js"/>
+        </xpath>
+    </template>
+    <template id="assets_backend" inherit_id="web.assets_backend" name="Hide Forecast Icon Asset">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/css" href="/a1_sale_location/static/src/css/hide_forecast_icon.css"/>
+        </xpath>
+    </template>
+    <template id="assets_backend" inherit_id="web.assets_backend" name="Hide Forecast Icon Asset">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/a1_sale_location/static/src/js/hide_forecast.js"/>
+        </xpath>
+    </template>
 </odoo>

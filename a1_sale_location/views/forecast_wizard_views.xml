@@ -1,0 +1,136 @@
+<!-- forecast_by_location/views/forecast_wizard_views.xml -->
+<odoo>
+    <record id="view_forecast_wizard_form" model="ir.ui.view">
+        <field name="model">forecast.by.location.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Forecast by Location">
+                <sheet>
+                    <group attrs="{'invisible': [('onhand_total','=', 0.0)]}">
+                        <div style="display:flex; justify-content:space-around; margin-bottom:1em;">
+                            <div style="flex:1; text-align:center;">
+                                <span class="text-primary" style="font-weight:600;">On Hand</span>
+                                <br/>
+                                <span style="font-size:1.2em;">
+                                    <field name="onhand_total" widget="monetary" options="{'no_symbol': True}"/>
+                                </span>
+                            </div>
+                            <div style="flex:1; text-align:center;">
+                                <span class="text-primary" style="font-weight:600;">Reserved</span>
+                                <br/>
+                                <span style="font-size:1.2em;">
+                                    <field name="reserved_total" widget="monetary" options="{'no_symbol': True}"/>
+                                </span>
+                            </div>
+                            <div style="flex:1; text-align:center;">
+                                <span class="text-primary" style="font-weight:600;">Forecast</span>
+                                <br/>
+                                <span style="font-size:1.2em;">
+                                    <field name="forecast_total" widget="monetary" options="{'no_symbol': True}"/>
+                                </span>
+                            </div>
+                        </div>
+                    </group>
+
+                    <!-- Chọn product & location -->
+                    <group>
+                        <field name="product_id"/>
+                        <field name="allowed_location_ids" invisible="1"/>
+                        <field name="location_ids"
+                               widget="many2many_tags"
+                               domain="[('id','in',allowed_location_ids)]"/>
+                    </group>
+                    <group>
+                        <button name="action_compute"
+                                type="object"
+                                string="Compute Forecast"
+                                class="btn-primary"/>
+                    </group>
+                    <!-- Kết quả -->
+                    <notebook>
+                        <page string="Results">
+                            <field name="line_ids" mode="tree,pivot,graph">
+                                <!-- INLINE TREE: đây là model forecast.by.location.line -->
+                                <tree string="Forecast by Location" editable="false">
+                                    <field name="location_id"/>
+                                    <field name="onhand"/>
+                                    <field name="forecast_qty"/>
+                                    <field name="reserved"/>
+                                </tree>
+                                <!-- INLINE PIVOT -->
+                                <pivot ref="a1_sale_location.view_forecast_line_pivot"/>
+                                <graph ref="a1_sale_location.view_forecast_line_graph"/>
+                            </field>
+                        </page>
+                        <!-- Details: Moves -->
+                        <page string="Details">
+                            <field name="move_ids">
+                                <tree editable="false">
+                                    <field name="move_type"/>
+                                    <field name="qty"/>
+                                    <field name="date"/>
+                                    <field name="document_ref"/>
+                                    <field name="move_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <menuitem id="menu_forecast_wizard"
+              name="Forecast By Location"
+              parent="sale.menu_sale_report"
+              action="action_forecast_wizard"
+              sequence="10"
+              groups="base.group_user"/>
+    <record id="action_forecast_wizard" model="ir.actions.act_window">
+        <field name="name">Forecast by Location</field>
+        <field name="res_model">forecast.by.location.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="groups_id" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="product_template_hide_forecast_button" model="ir.ui.view">
+        <field name="name">product.template.hide.forecast.button</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="stock.product_template_form_view_procurement_button"/>
+        <field name="arch" type="xml">
+            <!-- Tìm đúng nút forecast bằng name -->
+            <xpath expr="//button[@name='action_product_tmpl_forecast_report']" position="attributes">
+                <!-- Thêm nhóm giới hạn -->
+                <attribute name="groups">stock.group_stock_manager</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_open_quants']" position="after">
+                <button name="action_open_forecast_by_location"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-bar-chart"
+                        string="Locations Forecasted"
+                        groups="base.group_user"
+                />
+            </xpath>
+        </field>
+    </record>
+    <record id="product_product_inherit_view_form_stock_custom" model="ir.ui.view">
+        <field name="name">product.product.inherit.stock</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="stock.product_form_view_procurement_button"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_product_forecast_report']" position="attributes">
+                <attribute name="groups">stock.group_stock_manager</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_open_quants']" position="after">
+                <button name="action_open_forecast_by_location"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-bar-chart"
+                        string="Locations Forecasted"
+                        groups="base.group_user"
+                />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

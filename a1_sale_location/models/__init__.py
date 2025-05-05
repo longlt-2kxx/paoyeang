@@ -4,4 +4,7 @@ from . import report_product_replenishment
 from . import product_domain
 from . import sale_order_line
 from . import sale_order
-from . import ir_act_window
+from . import sale_report
+from . import clone_access_rights
+from . import forecast_wizard
+from . import product_template
