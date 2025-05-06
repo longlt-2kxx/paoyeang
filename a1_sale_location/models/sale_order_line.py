@@ -13,11 +13,7 @@ class SaleOrderLine(models.Model):
             product = line.product_id
             requested_qty = line.product_uom_qty
             warehouse = line.order_id.warehouse_id
-
-            # Tổng tồn kho toàn công ty
-            total_qty = product.qty_available
-
-            # Forecast theo warehouse đang chọn
+            total_qty = product.virtual_available
             forecast_qty = product.with_context(warehouse=warehouse.id).virtual_available
 
             warnings = []

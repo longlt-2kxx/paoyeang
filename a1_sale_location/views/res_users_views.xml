@@ -5,16 +5,12 @@
         <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
-            <!-- Thêm sau phần Email Signature -->
             <xpath expr="//field[@name='signature']" position="after">
                 <group string="Warehouse">
                     <field name="x_allowed_warehouse_ids" widget="many2many_tags"/>
                     <field name="x_allowed_location_ids" widget="many2many_tags"/>
                 </group>
             </xpath>
-            <!--            <xpath expr="//field[@name='tz']" position="attributes">-->
-            <!--                <attribute name="invisible">base.group_no_one</attribute>-->
-            <!--            </xpath>-->
         </field>
     </record>
     <record id="view_users_form_property_wh_restrict" model="ir.ui.view">
@@ -27,7 +23,7 @@
                        domain="[('id', 'in', x_allowed_warehouse_ids)]"
                        groups="stock.group_stock_multi_warehouses"/>
             </xpath>
-        </field> <!-- ✅ đây mới là field name="arch" -->
+        </field>
     </record>
 
 

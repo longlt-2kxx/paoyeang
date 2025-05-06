@@ -4,29 +4,28 @@
         <field name="model">sale.report</field>
         <field name="priority" eval="20"/>
         <field name="arch" type="xml">
-            <tree create="false">
-                <!-- Thông tin đơn hàng -->
-                <field name="name" string="SO Number"/>
-                <field name="date" string="Order Date"/>
-                <field name="state" string="Status"/>
-                <field name="team_id" string="Sales Team"/>
-                <field name="user_id" string="Salesperson"/>
-                <field name="company_id" string="Company"/>
+            <tree editable="bottom" create="false" edit="true">
+                <field name="order_id" string="SO Number" optional="show"/>
+                <field name="date" string="Order Date" optional="show"/>
+                <field name="state" string="Status" optional="show"/>
+                <field name="team_id" string="Sales Team" optional="show"/>
+                <field name="user_id" string="Salesperson" optional="show"/>
+                <field name="company_id" string="Company" optional="show"/>
 
                 <!-- Thông tin khách hàng và kho -->
-                <field name="partner_id" string="Customer"/>
-                <field name="warehouse_id" string="Warehouse"/>
+                <field name="partner_id" string="Customer" optional="show"/>
+                <field name="warehouse_id" string="Warehouse" optional="show"/>
 
                 <!-- Thông tin sản phẩm -->
-                <field name="product_id" string="Product"/>
-                <field name="product_uom" string="UoM"/>
-                <field name="categ_id" string="Product Category"/>
+                <field name="product_id" string="Product" optional="show"/>
+                <field name="product_uom" string="UoM" optional="show"/>
+                <field name="categ_id" string="Product Category" optional="show"/>
 
                 <!-- Số lượng và tài chính -->
-                <field name="product_uom_qty" string="Qty Ordered"/>
-                <field name="qty_delivered" string="Qty Delivered"/>
-                <field name="qty_invoiced" string="Qty Invoiced"/>
-                <field name="price_total" string="Subtotal"/>
+                <field name="product_uom_qty" string="Qty Ordered" optional="show"/>
+                <field name="qty_delivered" string="Qty Delivered" optional="show"/>
+                <field name="qty_invoiced" string="Qty Invoiced" optional="show"/>
+                <field name="price_total" string="Subtotal" optional="show"/>
             </tree>
         </field>
     </record>

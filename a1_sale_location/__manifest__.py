@@ -13,6 +13,7 @@
     'data': [
         'security/ir_groups.xml',
         'security/ir.model.access.csv',
+        'security/ir_rules.xml',
         'views/assets.xml',
         'views/res_users_views.xml',
         'views/sale_order_views.xml',
@@ -20,10 +21,10 @@
         'views/product_replenish_views.xml',
         'views/forecast_line_views.xml',
         'views/forecast_wizard_views.xml',
-        # 'views/forecast_templates_hidden.xml',
         'views/sale_reporting.xml',
         'views/clone_access.xml',
-        'security/ir_rules.xml',
+        'views/stock_warehouse_views.xml',
+
     ],
     'installable': True,
     'application': False,

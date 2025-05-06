@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<odoo>
-    <template id="qtyAtDate_inherit_hide_for_salesman" inherit_id="sale_stock.qtyAtDate" priority="20">
-        <!-- Chỉ hiển thị icon forecast nếu user thuộc group Sale Manager -->
-        <xpath expr="//a" position="attributes">
-            <attribute name="t-if">widget.env.session.user_has_group('sales_team.group_sale_manager')</attribute>
-        </xpath>
-    </template>
-</odoo>

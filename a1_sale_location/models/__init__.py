@@ -8,3 +8,4 @@ from . import sale_report
 from . import clone_access_rights
 from . import forecast_wizard
 from . import product_template
+from . import stock_warehouse

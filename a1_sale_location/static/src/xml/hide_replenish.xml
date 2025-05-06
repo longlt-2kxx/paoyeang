@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-  <!-- Inherit trực tiếp template có t-name="replenish_report_buttons" -->
   <template id="hide_replenish_button"
             inherit_id="stock.replenish_report_buttons"
             xml:space="preserve">
     <xpath expr="//button[@class='btn btn-primary o_report_replenish_buy']"
            position="attributes">
-      <!-- Tự động False => không bao giờ render nút -->
       <attribute name="t-if">False</attribute>
     </xpath>
   </template>

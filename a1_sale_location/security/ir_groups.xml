@@ -16,7 +16,6 @@
         <field name="groups_id"
                eval="[(4, ref('a1_sale_location.group_inventory_sales_admin')),(4, ref('stock.group_stock_user'))]"/>
     </record>
-
     <record id="sale_order_restrict_by_wh_or_user" model="ir.rule">
         <field name="name">Sale Order / Quotation: by Salesperson or Default Warehouse</field>
         <field name="model_id" ref="sale.model_sale_order"/>
@@ -39,8 +38,6 @@
         <field name="perm_write" eval="False"/>
         <field name="perm_create" eval="False"/>
         <field name="perm_unlink" eval="False"/>
-
-        <!-- Domain chính:  (user_id = user.id)  OR  (warehouse_id IN user.x_allowed_warehouse_ids) -->
         <field name="domain_force">
             ['|',
             ('user_id', '=', user.id),

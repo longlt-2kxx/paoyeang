@@ -10,16 +10,17 @@ class ForecastLine(models.TransientModel):
     location_id = fields.Many2one('stock.location', string='Location', readonly=True)
     onhand = fields.Float(string='On Hand', readonly=True)
     reserved = fields.Float(string='Reserved', readonly=True)
+    incoming = fields.Float(string='Incoming', readonly=True)
     forecast_qty = fields.Float(
         string='Forecast Qty',
         compute='_compute_forecast_qty',
         readonly=True, store=True,
     )
 
-    @api.depends('onhand', 'reserved')
+    @api.depends('onhand', 'reserved','incoming')
     def _compute_forecast_qty(self):
         for line in self:
-            line.forecast_qty = line.onhand - line.reserved
+            line.forecast_qty = line.onhand - line.reserved + line.incoming
 
 
 class ForecastMove(models.TransientModel):
@@ -94,33 +95,59 @@ class ForecastWizard(models.TransientModel):
             ['quantity', 'reserved_quantity', 'location_id'],
             ['location_id'], lazy=False)
         # create lines
+        location_map = {}
         for r in quant_data:
             loc = r['location_id'][0]
-            self.env['forecast.by.location.line'].create({
+            line = self.env['forecast.by.location.line'].create({
                 'wizard_id': self.id,
                 'location_id': loc,
                 'onhand': r.get('quantity', 0.0),
                 'reserved': r.get('reserved_quantity', 0.0),
             })
-        # 2) fetch moves for details
-        moves = self.env['stock.move'].search([
+            location_map[loc] = line
+        incoming_moves = self.env['stock.move'].search([
+            ('product_id', '=', self.product_id.id),
+            ('state', 'in', ['confirmed', 'assigned']),
+            ('location_dest_id', 'in', self.location_ids.ids),
+            ('location_dest_id.usage', '=', 'internal'),
+        ])
+        for mv in incoming_moves:
+            # Ghi vào tab chi tiết
+            self.env['forecast.by.location.move'].create({
+                'wizard_id': self.id,
+                'location_id': mv.location_dest_id.id,
+                'move_id': mv.id,
+                'move_type': 'incoming',
+                'qty': mv.product_uom_qty,
+                'date': mv.date,
+                'document_ref': mv.origin or '',
+            })
+            # Gộp vào dòng forecast nếu đã có
+            line = location_map.get(mv.location_dest_id.id)
+            if line:
+                line.incoming += mv.product_uom_qty  # Cộng thêm incoming
+            else:
+                line = self.env['forecast.by.location.line'].create({
+                    'wizard_id': self.id,
+                    'location_id': mv.location_dest_id.id,
+                    'onhand': 0.0,
+                    'reserved': 0.0,
+                    'incoming': mv.product_uom_qty,
+                })
+                location_map[mv.location_dest_id.id] = line
+        outgoing_moves = self.env['stock.move'].search([
             ('product_id', '=', self.product_id.id),
             ('state', 'in', ['confirmed', 'assigned']),
             ('location_id', 'in', self.location_ids.ids),
         ])
-        for mv in moves:
-            # determine type
-            if mv.reserved_availability:
-                typ = 'reserved'
-            elif mv.location_dest_id.usage == 'internal':
-                typ = 'incoming'
-            else:
-                typ = 'outgoing'
+        for mv in outgoing_moves:
+            # Loại move reserved (có reserved_availability) → hiển thị riêng
+            move_type = 'reserved' if mv.reserved_availability else 'outgoing'
             self.env['forecast.by.location.move'].create({
                 'wizard_id': self.id,
                 'location_id': mv.location_id.id,
                 'move_id': mv.id,
-                'move_type': typ,
+                'move_type': move_type,
                 'qty': mv.product_uom_qty,
                 'date': mv.date,
                 'document_ref': mv.origin or '',
@@ -134,9 +161,3 @@ class ForecastWizard(models.TransientModel):
             'view_mode': 'form',
             'target': 'current',
         }
-
-    @api.model
-    def _clean_old_records(self):
-        expired_time = fields.Datetime.now() - timedelta(minutes=15)
-        old_records = self.search([('create_date', '<', expired_time)])
-        old_records.unlink()

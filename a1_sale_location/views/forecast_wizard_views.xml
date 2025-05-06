@@ -30,8 +30,6 @@
                             </div>
                         </div>
                     </group>
-
-                    <!-- Chọn product & location -->
                     <group>
                         <field name="product_id"/>
                         <field name="allowed_location_ids" invisible="1"/>
@@ -45,7 +43,6 @@
                                 string="Compute Forecast"
                                 class="btn-primary"/>
                     </group>
-                    <!-- Kết quả -->
                     <notebook>
                         <page string="Results">
                             <field name="line_ids" mode="tree,pivot,graph">
@@ -53,8 +50,9 @@
                                 <tree string="Forecast by Location" editable="false">
                                     <field name="location_id"/>
                                     <field name="onhand"/>
-                                    <field name="forecast_qty"/>
                                     <field name="reserved"/>
+                                    <field name="incoming"/>
+                                    <field name="forecast_qty"/>
                                 </tree>
                                 <!-- INLINE PIVOT -->
                                 <pivot ref="a1_sale_location.view_forecast_line_pivot"/>
@@ -97,9 +95,7 @@
         <field name="model">product.template</field>
         <field name="inherit_id" ref="stock.product_template_form_view_procurement_button"/>
         <field name="arch" type="xml">
-            <!-- Tìm đúng nút forecast bằng name -->
             <xpath expr="//button[@name='action_product_tmpl_forecast_report']" position="attributes">
-                <!-- Thêm nhóm giới hạn -->
                 <attribute name="groups">stock.group_stock_manager</attribute>
             </xpath>
             <xpath expr="//button[@name='action_open_quants']" position="after">
