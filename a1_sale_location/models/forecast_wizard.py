@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models
 from datetime import timedelta
-
 class ForecastLine(models.TransientModel):
     _name = 'forecast.by.location.line'
     _description = 'Forecast by Location Line'
@@ -60,7 +59,7 @@ class ForecastWizard(models.TransientModel):
     )
     line_ids = fields.One2many('forecast.by.location.line', 'wizard_id', string='Forecast Lines')
     move_ids = fields.One2many('forecast.by.location.move', 'wizard_id', string='Move Details')
-
+    x_show_result = fields.Boolean(default=False)
     # KPI summary
     onhand_total = fields.Float(string='Total On Hand', readonly=True, compute='_compute_summary')
     reserved_total = fields.Float(string='Total Reserved', readonly=True, compute='_compute_summary')
@@ -88,6 +87,7 @@ class ForecastWizard(models.TransientModel):
         # clear old
         self.line_ids.unlink()
         self.move_ids.unlink()
+        self.x_show_result = True
         # 1) fetch quant groups
         quant_data = self.env['stock.quant'].read_group(
             [('product_id', '=', self.product_id.id),
