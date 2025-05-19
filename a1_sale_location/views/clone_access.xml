@@ -21,10 +21,19 @@
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
-    <menuitem id="menu_clone_access_root" name="Access Tools" sequence="100" groups="base.group_system"/>
-    <menuitem id="menu_clone_access_rights" name="Clone Access Rights"
-              parent="base.menu_users"
-              action="action_clone_access_wizard"
-              sequence="1"
-    />
+    <record id="view_groups_form_inherit_clone" model="ir.ui.view">
+        <field name="name">res.groups.clone.access.button</field>
+        <field name="model">res.groups</field>
+        <field name="inherit_id" ref="base.view_groups_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='access_rights']" position="inside">
+                <button name="%(action_clone_access_wizard)d"
+                        string="Clone Access"
+                        type="action"
+                        class="oe_highlight"
+                        context="{'default_group_to_id': active_id}"
+                        groups="base.group_system"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>

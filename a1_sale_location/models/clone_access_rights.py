@@ -27,7 +27,7 @@ class CloneAccessWizard(models.TransientModel):
 
             if not exists:
                 access_model.create({
-                    'name': f"access_{access.model_id.model.replace('.', '_')}_{self.group_to_id.id}",
+                    'name': f"access_{access.model_id.model.replace('.', '_')}_right",
                     'model_id': access.model_id.id,
                     'group_id': self.group_to_id.id,
                     'perm_read': access.perm_read,

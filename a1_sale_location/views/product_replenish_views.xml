@@ -15,7 +15,7 @@
         <field name="model">product.replenish</field>
         <field name="inherit_id" ref="stock.view_product_replenish"/>
         <field name="arch" type="xml">
-              <xpath expr="//field[@name='warehouse_id']" position="attributes">
+            <xpath expr="//field[@name='warehouse_id']" position="attributes">
                 <attribute name="string">Transfer to</attribute>
             </xpath>
             <xpath expr="//field[@name='route_ids']" position="attributes">

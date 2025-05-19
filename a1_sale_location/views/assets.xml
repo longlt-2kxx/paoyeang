@@ -14,4 +14,9 @@
             <script type="text/javascript" src="/a1_sale_location/static/src/js/hide_forecast.js"/>
         </xpath>
     </template>
+    <template id="assets_backend" inherit_id="web.assets_backend" name="Hide Forecast Icon Asset">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/a1_sale_location/static/src/js/print_action_invisible.js"/>
+        </xpath>
+    </template>
 </odoo>

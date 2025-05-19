@@ -4,3 +4,4 @@ access_forecast_by_location_line_user,access.forecast.by.location.line.user,mode
 access_forecast_by_location_move_user,access.forecast.by.location.move.user,model_forecast_by_location_move,base.group_user,1,1,1,1
 access_action_window_user,access.action.window.user,base.model_ir_actions_act_window,base.group_user,1,1,1,1
 access_action_window_view_user,access.action.window.view.user,base.model_ir_actions_act_window_view,base.group_user,1,1,1,1
+access_clone_access_wizard_user,clone.access.wizard.user,model_clone_access_wizard,base.group_system,1,1,1,1
